@@ -1,0 +1,28 @@
+# Generic
+*.log
+*.zip
+*.tar.gz
+
+# Java
+.mtj.tmp/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+
+# Maven
+target/
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# IntelliJ IDEA
+.idea
+*.iws
+*.iml
+*.ipr
+
+# OS
+.DS_Store
+._*
