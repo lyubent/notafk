@@ -34,7 +34,7 @@ public class MouseMover {
                 });
                 iterations.getAndIncrement();
                 // todo - this cannot be on the main thread, use an executor
-                Thread.sleep(Duration.of(5, ChronoUnit.SECONDS));
+                Thread.sleep(Duration.of(5, ChronoUnit.SECONDS).toMillis());
             }
         } catch (Exception ex) {
             logger.error("Caught unrecoverable exception. Terminating application", ex);
