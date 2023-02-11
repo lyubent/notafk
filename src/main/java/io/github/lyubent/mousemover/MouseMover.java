@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MouseMover {
 
@@ -21,7 +22,8 @@ public class MouseMover {
             Platform.startup(() -> robot = new Robot());
             Instant start = Instant.now();
             Instant lastUpdate = Instant.now();
-            int iterations = 0;
+            // workaround - enables usage of var inside lambda as value is never reassigned - thus its effectively final
+            AtomicInteger iterations = new AtomicInteger(0);
 
             // run for two hours
             while (Duration.between(start, Instant.now()).compareTo(Duration.of(2, ChronoUnit.HOURS)) < 0) {
@@ -34,13 +36,12 @@ public class MouseMover {
                 logger.trace("Updating mouse position");
                 lastUpdate = Instant.now();
 
-                int tempIteration = iterations;
                 Platform.runLater(() -> {
-                    double newMouseX = tempIteration % 2 == 0 ? robot.getMouseX() + MOVEMENT_SPAN
-                                                              : robot.getMouseX() - MOVEMENT_SPAN;
+                    double newMouseX = iterations.get() % 2 == 0 ? robot.getMouseX() + MOVEMENT_SPAN
+                                                                 : robot.getMouseX() - MOVEMENT_SPAN;
                     robot.mouseMove(new Point2D(newMouseX, robot.getMouseY()));
                 });
-                iterations++;
+                iterations.getAndIncrement();
             }
         } catch (Exception ex) {
             logger.error("Caught unrecoverable exception. Terminating application", ex);
